@@ -7,9 +7,12 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import fetch from 'node-fetch';
-import Stripe from 'stripe';
+// import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+// const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '');
+
+
 const app = express();
 app.use(cors());
 
