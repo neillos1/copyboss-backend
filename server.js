@@ -88,8 +88,9 @@ app.post('/create-checkout-session', async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: 'http://copy-boss.com/success.html',
-      cancel_url: 'http://copy-boss.com/cancel.html',
+      success_url: 'https://copy-boss.com/?accesscode=ABC123',
+      cancel_url: 'https://copy-boss.com/cancel.html',
+      
     });
 
     res.json({ sessionId: session.id });
