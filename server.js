@@ -11,12 +11,14 @@ import Stripe from 'stripe';
 
 const app = express();
 
-// ✅ Middleware
+
+// ✅ CORS Setup
 app.use(cors({
-  origin: ['https://copy-boss.com', 'https://www.copy-boss.com'],
+  origin: ['https://copy-boss.com', 'https://www.copy-boss.com', 'https://copyboss.onrender.com'],
   methods: ['GET', 'POST'],
   credentials: true
 }));
+
 
 app.use(bodyParser.json());
 
@@ -124,4 +126,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+// Force rebuild
 // Force rebuild
