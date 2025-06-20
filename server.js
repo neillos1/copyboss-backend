@@ -17,6 +17,7 @@ app.use(cors({
   methods: ['GET', 'POST'],
   credentials: true
 }));
+
 app.use(bodyParser.json());
 
 // 🧪 Log every incoming request
