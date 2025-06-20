@@ -14,7 +14,8 @@ import fetch from 'node-fetch';
 
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "https://copy-boss.com" }));
+
 
 // 🟦 Stripe webhook raw body parser (must come before json parser)
 app.use('/webhook', express.raw({ type: 'application/json' }));
