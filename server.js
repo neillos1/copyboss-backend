@@ -9,19 +9,32 @@ import bodyParser from 'body-parser';
 import fetch from 'node-fetch';
 import Stripe from 'stripe';
 
-
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '');
-
-
-
 const app = express();
-app.use(cors({ origin: "https://copy-boss.com" }));
 
+// ✅ Middleware
+app.use(cors({
+  origin: ['https://copy-boss.com', 'https://www.copy-boss.com'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+app.use(bodyParser.json());
+
+// 🧪 Log every incoming request
+app.use((req, res, next) => {
+  console.log(`➡️  Incoming: ${req.method} ${req.url}`);
+  next();
+});
+
+// 🧪 CORS Test Endpoint
+app.get('/cors-test', (req, res) => {
+  res.json({ cors: "ok" });
+});
+
+// 💳 Stripe setup
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // 🟦 Stripe webhook raw body parser (must come before json parser)
 app.use('/webhook', express.raw({ type: 'application/json' }));
-app.use(bodyParser.json());
 
 // 🧠 OpenAI Script Generator Endpoint
 app.post('/generate', async (req, res) => {
@@ -106,4 +119,8 @@ app.post('/webhook', express.raw({ type: 'application/json' }), (request, respon
 });
 
 // 🚀 Start server
-app.listen(3000, () => console.log("✅ Backend running on http://localhost:3000"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+// Force rebuild
