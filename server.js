@@ -10,14 +10,12 @@ import fetch from 'node-fetch';
 import Stripe from 'stripe';
 import OpenAI from 'openai';
 
+// ✅ App + API clients
+const app = express(); // ⬅️ THIS LINE WAS MISSING
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
-
-
-
-
-
 
 // ✅ CORS Setup
 app.use(cors({
@@ -27,6 +25,7 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json());
+
 
 // 🔥 Wake endpoint to prevent Render cold starts
 app.get('/wake', (req, res) => {
