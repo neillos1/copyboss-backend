@@ -72,6 +72,20 @@ app.post('/create-checkout-session', async (req, res) => {
 app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
   res.status(200).send('Webhook received');
 });
+// ✍️ Script Generator Endpoint
+app.post('/generate', async (req, res) => {
+  const prompt = req.body.prompt;
+  console.log("🟢 Prompt received:", prompt);
+
+  try {
+    const generatedScript = `Here's your viral video script idea based on: "${prompt}"`;
+
+    res.status(200).json({ script: generatedScript });
+  } catch (err) {
+    console.error("❌ Error generating script:", err);
+    res.status(500).json({ error: 'Script generation failed' });
+  }
+});
 
 // 🚀 Start Server
 const PORT = process.env.PORT || 3000;
