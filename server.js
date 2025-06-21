@@ -8,15 +8,13 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import fetch from 'node-fetch';
 import Stripe from 'stripe';
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(configuration);
 
-const app = express();
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 
 
 
@@ -84,17 +82,17 @@ app.post("/generate", async (req, res) => {
   console.log("🟢 Prompt received:", prompt);
 
   try {
-    const response = await openai.createChatCompletion({
+    const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }],
     });
 
-    const aiReply = response.data.choices[0].message.content;
-    console.log("🧠 AI Response:", aiReply); // ✅ This should show in logs
+    const aiReply = response.choices[0].message.content;
+    console.log("🧠 AI Response:", aiReply);
 
     res.json({ script: aiReply });
   } catch (err) {
-    console.error("❌ OpenAI Error:", err.response?.data || err.message);
+    console.error("❌ OpenAI Error:", err);
     res.status(500).json({ error: "OpenAI failed" });
   }
 });
