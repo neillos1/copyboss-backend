@@ -53,7 +53,8 @@ app.post('/create-checkout-session', async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: 'https://copy-boss.com/?accesscode=ABC123',
+      success_url: 'https://copy-boss.com/?session_id={CHECKOUT_SESSION_ID}',
+
       cancel_url: 'https://copy-boss.com/cancel.html',
     });
 
@@ -104,3 +105,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+ 
