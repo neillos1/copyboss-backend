@@ -10,8 +10,10 @@ import fetch from 'node-fetch';
 import Stripe from 'stripe';
 
 const app = express();
-const stripe = new Stripe('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'); // your full live secret key here
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+import dotenv from 'dotenv';
 dotenv.config();
+
 
 
 // ✅ CORS Setup
