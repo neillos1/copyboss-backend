@@ -11,8 +11,7 @@ import Stripe from 'stripe';
 
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-import dotenv from 'dotenv';
-dotenv.config();
+
 
 
 
