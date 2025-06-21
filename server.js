@@ -8,6 +8,12 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import fetch from 'node-fetch';
 import Stripe from 'stripe';
+import { Configuration, OpenAIApi } from 'openai';
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+const openai = new OpenAIApi(configuration);
 
 const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -73,27 +79,27 @@ app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
   res.status(200).send('Webhook received');
 });
 // ✅ Script Generator Endpoint
-app.post('/generate', async (req, res) => {
+app.post("/generate", async (req, res) => {
   const prompt = req.body.prompt;
   console.log("🟢 Prompt received:", prompt);
 
   try {
-    const fakeResponse = {
-      choices: [
-        {
-          message: {
-            content: `🔥 ${prompt.trim().slice(0, 60)}...\n💡 Here’s your body line.\n📢 Call to action goes here.`
-          }
-        }
-      ]
-    };
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }],
+    });
 
-    res.status(200).json(fakeResponse);
+    const aiReply = response.data.choices[0].message.content;
+    console.log("🧠 AI Response:", aiReply); // ✅ This should show in logs
+
+    res.json({ script: aiReply });
   } catch (err) {
-    console.error("❌ Script generation error:", err);
-    res.status(500).json({ error: "Script generation failed" });
+    console.error("❌ OpenAI Error:", err.response?.data || err.message);
+    res.status(500).json({ error: "OpenAI failed" });
   }
 });
+
+
 
 
 // 🚀 Start Server
