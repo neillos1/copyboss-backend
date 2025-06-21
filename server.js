@@ -67,35 +67,7 @@ app.post('/create-checkout-session', async (req, res) => {
 
 
 
-// 💰 Stripe Checkout Endpoint
-app.post('/create-checkout-session', async (req, res) => {
-  try {
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode: 'payment',
-      line_items: [
-        {
-          price_data: {
-            currency: 'gbp',
-            product_data: {
-              name: 'Unlimited Script Generator + Bonus Tools',
-              description: 'Lifetime access to viral script generator, hashtag tool, and bonuses.',
-            },
-            unit_amount: 199,
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: 'https://copy-boss.com/?accesscode=ABC123',
-      cancel_url: 'https://copy-boss.com/cancel.html',
-    });
 
-    res.status(200).json({ id: session.id });
-  } catch (err) {
-    console.error("❌ Stripe session error:", err);
-    res.status(500).json({ error: 'Something went wrong with Stripe.' });
-  }
-});
 
 // ✅ Stripe Webhook (Optional - Can be expanded later)
 app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
